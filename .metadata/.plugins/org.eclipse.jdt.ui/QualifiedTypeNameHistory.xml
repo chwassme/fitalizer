@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.google.common.base.Objects"/>
+<fullyQualifiedTypeName name="java.lang.IllegalArgumentException"/>
+<fullyQualifiedTypeName name="java.util.Collection"/>
+<fullyQualifiedTypeName name="java.lang.IllegalStateException"/>
+<fullyQualifiedTypeName name="java.util.stream.Stream"/>
+<fullyQualifiedTypeName name="java.util.function.ToDoubleFunction"/>
+<fullyQualifiedTypeName name="java.util.function.BinaryOperator"/>
+<fullyQualifiedTypeName name="ch.chwassme.fitalizer.Segment"/>
+</qualifiedTypeNameHistroy>

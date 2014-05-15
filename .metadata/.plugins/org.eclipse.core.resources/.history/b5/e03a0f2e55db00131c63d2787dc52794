@@ -1,0 +1,25 @@
+package ch.chwassme.fitalizer;
+
+import com.garmin.fit.Decode;
+import com.garmin.fit.MesgBroadcaster;
+import com.garmin.fit.RecordMesg;
+import com.garmin.fit.RecordMesgListener;
+
+public class Main {
+
+	private static class Listener implements RecordMesgListener {
+
+		public void onMesg(RecordMesg mesg) {
+			System.out.println(mesg.toString());
+		}
+
+	}
+
+	public static void main(String[] args) {
+
+	      Decode decode = new Decode();
+	      MesgBroadcaster mesgBroadcaster = new MesgBroadcaster(decode);
+		Listener listener = new Listener();
+	}
+	
+}

@@ -1,0 +1,12 @@
+package ch.chwassme.fitalizer;
+
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+public class SegmentAnalyzer {
+
+  public void analyze(Stream<Segment> segments) {
+	segments.map(s -> s.getDistance());
+  }
+
+}

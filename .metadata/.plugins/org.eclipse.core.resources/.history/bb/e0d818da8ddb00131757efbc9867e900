@@ -1,0 +1,79 @@
+package ch.chwassme.fitalizer;
+
+import com.google.common.base.Objects;
+
+public class Segment {
+
+  private static final float THRESHOLD = 100f;
+
+  public static Segment create(RecordData start) {
+	return new Segment(start);
+  }
+
+  public static Segment createFromAdjacent(Segment segment) {
+	if (!segment.isFinished()) {
+	  throw new IllegalStateException("segment must be finished");
+	}
+	return create(segment.end);
+  }
+
+  private final RecordData start;
+  private RecordData end;
+
+  private Segment(RecordData start) {
+	if (start.getDistance() == null) {
+	  throw new IllegalArgumentException("distance may not be null");
+	}
+	this.start = start;
+  }
+
+  public boolean finishedBy(RecordData data) {
+	assert (data.getDistance() > start.getDistance());
+	float distance = data.getDistance() - start.getDistance();
+	return (distance > THRESHOLD);
+  }
+
+  public boolean isFinished() {
+	return end != null;
+  }
+
+  public void finish(RecordData end) {
+	if (isFinished()) {
+	  throw new IllegalStateException("Segment is already finished");
+	}
+	this.end = end;
+  }
+
+  public double getDistance() {
+	if (!isFinished()) {
+	  throw new IllegalStateException("segment must be finished");
+	}
+	return end.getDistance() - start.getDistance();
+  }
+
+  public double getGrade() {
+	if (!isFinished() || getHorizontalDistance() == 0) {
+	  return Double.NaN;
+	}
+	return getHeight() / getHorizontalDistance();
+  }
+
+  private double getHorizontalDistance() {
+	// a^2 + b^2 = c^2 - where a is horizontal distance, b height-delta and c is
+	// the distance
+	double b = getDistance();
+	double c = getHeight();
+	double a = Math.pow(Math.pow(c, 2) - Math.pow(b, 2), 0.5);
+	return a;
+  }
+
+  private double getHeight() {
+	return (double)end.getAltitude() - (double) start.getAltitude();
+  }
+
+  @Override
+  public String toString() {
+	return Objects.toStringHelper(this).addValue(start).addValue(end).addValue(getGrade()).toString();
+  }
+
+}

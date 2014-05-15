@@ -1,0 +1,13 @@
+1400064663153	Move file
+1400064683233	Rename resource '2014-05-13-09-37-47.fit'
+1400083054005	Inline local variable 'decode'
+1400085304460	Extract local variable 'recordMesgListener'
+1400087326974	Extract method 'extracted'
+1400097576206	Inline local variable 'c'
+1400097581511	Inline local variable 'b'
+1400097589333	Inline local variable 'a'
+1400097755038	Rename method 'analyse'
+1400097945457	Move file
+1400098050551	Rename method 'analyze'
+1400098391038	Inline local variable 'fn'
+1400102094479	Rename field 'THRESHOLD'

@@ -1,0 +1,12 @@
+package ch.chwassme.fitalizer;
+
+import java.util.stream.Stream;
+
+public class SegmentAnalyzer {
+
+  public void analyze(Stream<Segment> segments) {
+	// TODO Auto-generated method stub
+
+  }
+
+}

@@ -1,0 +1,19 @@
+package ch.chwassme.fitalizer;
+
+import java.util.function.ToDoubleFunction;
+import java.util.stream.Stream;
+
+public class SegmentAnalyzer {
+
+  public void analyze(Stream<Segment> segments) {
+	ToDoubleFunction<? super Segment> fn = new ToDoubleFunction<Segment>() {
+
+	  @Override
+	  public double applyAsDouble(Segment value) {
+		return 0;
+	  }
+	};
+	segments.mapToDouble(fn);
+  }
+
+}

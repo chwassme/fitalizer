@@ -1,0 +1,52 @@
+package ch.chwassme.fitalizer;
+
+import com.google.common.base.Objects;
+
+public class Segment {
+
+  private static final float THRESHOLD = 100f;
+
+  public static Segment create(RecordData start) {
+	return new Segment(start);
+  }
+
+  public static Segment createFromAdjacent(Segment segment) {
+	if (!segment.isFinished()) {
+	  throw new IllegalStateException("segment must be finished");
+	}
+	  return create(segment.end);
+  }
+
+  private final RecordData start;
+  private RecordData end;
+
+  private Segment(RecordData start) {
+	if (start.getDistance() == null) {
+	  throw new IllegalArgumentException("distance may not be null");
+	}
+	this.start = start;
+  }
+
+  public boolean finishedBy(RecordData data) {
+	assert (data.getDistance() > start.getDistance());
+	float distance = data.getDistance() - start.getDistance();
+	return (distance > THRESHOLD);
+  }
+
+  public boolean isFinished() {
+	return end != null;
+  }
+
+  public void finish(RecordData end) {
+	if (isFinished()) {
+	  throw new IllegalStateException("Segment is already finished");
+	}
+	this.end = end;
+  }
+
+  @Override
+  public String toString() {
+	return Objects.toStringHelper(this).addValue(start).addValue(end).toString();
+  }
+
+}

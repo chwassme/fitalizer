@@ -1,0 +1,67 @@
+package ch.chwassme.fitalizer;
+
+import java.io.InputStream;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import com.garmin.fit.Decode;
+import com.garmin.fit.MesgBroadcaster;
+import com.garmin.fit.RecordMesg;
+import com.garmin.fit.RecordMesgListener;
+
+public class FitRecordData {
+
+  public static FitRecordData read(InputStream in) {
+	MesgBroadcaster mesgBroadcaster = new MesgBroadcaster(new Decode());
+
+	final FitRecordData data = new FitRecordData();
+	mesgBroadcaster.addListener(new RecordMesgListener() {
+
+	  @Override
+	  public void onMesg(RecordMesg mesg) {
+		data.addData(mesg);
+	  }
+	});
+	RecordMesgListener recordMesgListener = new RecordMesgListener() {
+
+	  @Override
+	  public void onMesg(RecordMesg mesg) {
+		System.out.println(mesg.getDistance());
+	  }
+	};
+	// mesgBroadcaster.addListener(recordMesgListener);
+
+	mesgBroadcaster.run(in);
+	return data;
+  }
+
+  private final SortedSet<RecordData> data;
+
+  private FitRecordData() {
+	data = new TreeSet<RecordData>();
+  }
+
+  public void addData(RecordMesg record) {
+	data.add(new RecordData(record));
+  }
+
+  public void analyse() {
+	final double distance = 0.100; // 100 meters
+	RecordData lastRecord = null;
+	for (RecordData data : this.data) {
+	  if (data.getDistance() == null || data.getAltitude() == null) {
+		continue;
+	  }
+
+	  if (lastRecord == null || data.getDistance() - lastRecord.getDistance() > distance) {
+		// System.out.println(data);
+		lastRecord = data;
+		double diff = data.getDistance() - lastRecord.getDistance();
+		System.out.println(lastRecord);
+
+	  }
+	}
+
+  }
+
+}

@@ -1,0 +1,12 @@
+package ch.chwassme.fitalizer;
+
+import java.util.function.ToDoubleFunction;
+import java.util.stream.Stream;
+
+public class SegmentAnalyzer {
+
+  public void analyze(Stream<Segment> segments) {
+	segments.mapToDouble(new ToDoubleFunction<Segment>());
+  }
+
+}

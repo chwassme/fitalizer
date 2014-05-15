@@ -1,0 +1,13 @@
+package ch.chwassme.fitalizer;
+
+import com.garmin.fit.RecordMesg;
+
+public class RecordData extends RecordMesg implements Comparable<RecordData> {
+
+  @Override
+  public int compareTo(RecordData d) {
+	// return d.getTime128()
+	return getTimestamp().compareTo(d.getTimestamp());
+  }
+
+}

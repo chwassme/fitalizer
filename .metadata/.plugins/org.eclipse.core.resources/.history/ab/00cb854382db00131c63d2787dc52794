@@ -1,0 +1,51 @@
+package ch.chwassme.fitalizer;
+
+import java.io.InputStream;
+import java.util.SortedSet;
+
+import com.garmin.fit.Decode;
+import com.garmin.fit.MesgBroadcaster;
+import com.garmin.fit.RecordMesg;
+import com.garmin.fit.RecordMesgListener;
+
+public class FitRecordData {
+
+  public static FitRecordData read(InputStream in) {
+	MesgBroadcaster mesgBroadcaster = new MesgBroadcaster(new Decode());
+
+	final FitRecordData data = new FitRecordData();
+	mesgBroadcaster.addListener(new RecordMesgListener() {
+
+	  @Override
+	  public void onMesg(RecordMesg mesg) {
+		data.addData(mesg);
+	  }
+	});
+	mesgBroadcaster.addListener(new RecordMesgListener() {
+
+	  @Override
+	  public void onMesg(RecordMesg mesg) {
+		System.out.println(mesg.getTime128());
+	  }
+	});
+
+	mesgBroadcaster.run(in);
+	return data;
+  }
+  
+  private SortedSet<RecordData> data;
+
+  private FitRecordData() {
+
+  }
+
+  public void addData(RecordMesg record) {
+	// TODO implement
+  }
+
+  public void analyse() {
+	// TODO Auto-generated method stub
+
+  }
+
+}

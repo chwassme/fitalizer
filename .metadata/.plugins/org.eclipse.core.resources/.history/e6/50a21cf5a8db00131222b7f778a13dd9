@@ -1,0 +1,13 @@
+package ch.chwassme.fitalizer;
+
+import java.util.DoubleSummaryStatistics;
+import java.util.stream.Stream;
+
+public class SegmentAnalyzer {
+
+  public void analyze(Stream<Segment> segments) {
+	double distance = segments.mapToDouble(s -> s.getDistance()).sum();
+	DoubleSummaryStatistics gradeStats = segments.mapToDouble(s -> s.getDistance()).summaryStatistics();
+  }
+
+}

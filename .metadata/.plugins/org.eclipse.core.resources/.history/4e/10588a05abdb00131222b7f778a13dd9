@@ -1,0 +1,25 @@
+package ch.chwassme.fitalizer;
+
+import java.util.Collection;
+import java.util.DoubleSummaryStatistics;
+import java.util.function.IntConsumer;
+
+public class SegmentAnalyzer {
+
+  public void analyze(Collection<Segment> segments) {
+	DoubleSummaryStatistics distance = segments.stream().mapToDouble(s -> s.getDistance()).summaryStatistics();
+	DoubleSummaryStatistics height = segments.stream().mapToDouble(s -> s.getHeight()).summaryStatistics();
+	DoubleSummaryStatistics grade = segments.stream().mapToDouble(s -> s.getGrade()).summaryStatistics();
+	System.out.println(distance);
+	System.out.println(height);
+	System.out.println(grade);
+	segments.stream().mapToInt(s -> (int) Math.round(s.getGrade())).forEach(new IntConsumer() {
+
+	  @Override
+	  public void accept(int grade) {
+		// TODO Auto-generated method stub
+
+	  }
+	});
+  }
+}

@@ -1,0 +1,39 @@
+package ch.chwassme.fitalizer;
+
+import com.garmin.fit.RecordMesg;
+
+public class RecordData implements Comparable<RecordData> {
+
+  private final RecordMesg data;
+
+  public RecordData(RecordMesg msg) {
+	this.data = msg;
+  }
+
+  public double getDistance() {
+	return data.getDistance().doubleValue();
+  }
+
+  public double getAltitude() {
+	return data.getAltitude().doubleValue();
+  }
+
+  public Long getTime() {
+	return data.getTimestamp().getTimestamp();
+  }
+
+  public int getHeartrate() {
+	return data.getHeartRate();
+  }
+
+  @Override
+  public int compareTo(RecordData d) {
+	return getTime().compareTo(d.getTime());
+  }
+
+  @Override
+  public String toString() {
+	return getTime().toString();
+  }
+
+}

@@ -1,0 +1,91 @@
+package ch.chwassme.fitalizer;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import com.garmin.fit.Decode;
+import com.garmin.fit.FitRuntimeException;
+import com.garmin.fit.MesgBroadcaster;
+import com.garmin.fit.RecordMesg;
+import com.garmin.fit.RecordMesgListener;
+
+public class Main {
+
+  private static class Listener implements RecordMesgListener {
+
+	public void onMesg(RecordMesg mesg) {
+	}
+
+  }
+  
+  public static void main(String[] args) {
+	String filename = "data/test.fit";
+	BufferedInputStream bis;
+	try {
+	  bis = new BufferedInputStream(new FileInputStream(filename));
+	  FitRecordData data= FitRecordData.read(bis);
+	} catch (Exception e) {
+	  System.err.println(e);
+	}
+  }
+
+//  public static void main(String[] args) {
+//
+//	Decode decode = new Decode();
+//	MesgBroadcaster mesgBroadcaster = new MesgBroadcaster(decode);
+//	Listener listener = new Listener();
+//	String filename = "data/test.fit";
+//
+//	FileInputStream in;
+//	try {
+//	  in = new FileInputStream(filename);
+//	} catch (java.io.IOException e) {
+//	  throw new RuntimeException("Error opening file " + filename + " [1]");
+//	}
+//
+//	try {
+//	  if (!Decode.checkIntegrity((InputStream) in))
+//		throw new RuntimeException("FIT file integrity failed.");
+//	} finally {
+//	  try {
+//		in.close();
+//	  } catch (java.io.IOException e) {
+//		throw new RuntimeException(e);
+//	  }
+//	}
+//
+//	try {
+//	  in = new FileInputStream(filename);
+//	} catch (java.io.IOException e) {
+//	  throw new RuntimeException("Error opening file " + filename + " [2]");
+//	}
+//
+//	mesgBroadcaster.addListener((RecordMesgListener) listener);
+//
+//	try {
+//	  mesgBroadcaster.run(in);
+//	} catch (FitRuntimeException e) {
+//	  System.err.print("Exception decoding file: ");
+//	  System.err.println(e.getMessage());
+//
+//	  try {
+//		in.close();
+//	  } catch (java.io.IOException f) {
+//		throw new RuntimeException(f);
+//	  }
+//
+//	  return;
+//	}
+//
+//	try {
+//	  in.close();
+//	} catch (java.io.IOException e) {
+//	  throw new RuntimeException(e);
+//	}
+//
+//	System.out.println("Decoded FIT file " + filename + ".");
+//  }
+
+}
