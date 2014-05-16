@@ -4,39 +4,47 @@ import com.google.common.base.Objects;
 
 public class Segment {
 
-  private static final float DEFAULT_THRESHOLD = 100f;
+  private static final int DEFAULT_THRESHOLD = 100;
 
-  public static Segment create(RecordData start) {
-	return new Segment(start);
+  public static Segment create(RecordData start, int threshold) {
+	return new Segment(start, threshold);
   }
 
   public static Segment createFromAdjacent(Segment segment) {
 	if (!segment.isFinished()) {
 	  throw new IllegalStateException("segment must be finished");
 	}
-	return create(segment.end);
+	return create(segment.end, segment.threshold);
   }
 
   private final RecordData start;
+  private final int threshold;
   private RecordData end;
 
-  private Segment(RecordData start) {
-	if (start.getDistance() == null) {
-	  throw new IllegalArgumentException("distance may not be null");
+  private Segment(RecordData start, int threshold) {
+	if (start.getDistance() == null || start.getAltitude() == null) {
+	  throw new IllegalArgumentException("distance or altitude may not be null");
+	}
+	if (threshold <= 0) {
+	  throw new IllegalArgumentException("threshold must be positive");
 	}
 	this.start = start;
+	this.threshold = threshold;
   }
 
   public boolean finishedBy(RecordData data) {
 	return finishedBy(data, DEFAULT_THRESHOLD);
   }
 
-  public boolean finishedBy(RecordData data, Float threshold) {
-	assert (data.getDistance() > start.getDistance());
+  public boolean finishedBy(RecordData data, Integer threshold) {
+	assert (data.getDistance() >= start.getDistance());
+	if (data.getDistance() == start.getDistance()) {
+	  return false;
+	}
 	if (threshold == null) {
 	  threshold = DEFAULT_THRESHOLD;
 	}
-	float distance = data.getDistance() - start.getDistance();
+	double distance = data.getDistance() - start.getDistance();
 	return (distance > threshold);
   }
 
@@ -51,7 +59,7 @@ public class Segment {
 	this.end = end;
   }
 
-  public double getDistance() {
+  public double getLength() {
 	if (!isFinished()) {
 	  throw new IllegalStateException("segment must be finished");
 	}
@@ -69,7 +77,7 @@ public class Segment {
   }
 
   private double getHorizontalDistance() {
-	return Math.pow(Math.pow(getDistance(), 2) - Math.pow(getHeight(), 2), 0.5);
+	return Math.pow(Math.pow(getLength(), 2) - Math.pow(getHeight(), 2), 0.5);
   }
 
   public double getHeight() {
@@ -80,8 +88,13 @@ public class Segment {
 
   @Override
   public String toString() {
-	return Objects.toStringHelper(this).addValue(start).addValue(end).addValue(getDistance()).addValue(getHeight())
-		.addValue(String.format("%.1f%%", getGrade() * 100.)).toString();
+	return Objects.toStringHelper(this)
+		.addValue(start)
+		.addValue(end)
+		.addValue(threshold)
+		.addValue(String.format("%5.1f", getLength()))
+		.addValue(String.format("%4.1f", getHeight()))
+		.addValue(String.format("%5.1f%%", getGrade() * 100.))
+		.toString();
   }
-
 }

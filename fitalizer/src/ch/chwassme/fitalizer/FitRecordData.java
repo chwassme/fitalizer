@@ -24,15 +24,6 @@ public class FitRecordData {
 		data.addData(mesg);
 	  }
 	});
-	RecordMesgListener recordMesgListener = new RecordMesgListener() {
-
-	  @Override
-	  public void onMesg(RecordMesg mesg) {
-		System.out.println(mesg.getDistance());
-	  }
-	};
-	// mesgBroadcaster.addListener(recordMesgListener);
-
 	mesgBroadcaster.run(in);
 	return data;
   }
@@ -44,30 +35,34 @@ public class FitRecordData {
   }
 
   public void addData(RecordMesg record) {
-	data.add(new RecordData(record));
+	RecordData recordData = RecordData.createFrom(record);
+	if (recordData != null) {
+	  data.add(recordData);
+	}
   }
 
   public Collection<Segment> segments() {
-	return segments((Float) null);
+	return segments((Integer) null);
   }
 
-  public Collection<Segment> segments(Float threshold) {
+  public Collection<Segment> segments(Integer threshold) {
 	Collection<Segment> segments = new ArrayList<Segment>();
 	Segment segment = null;
 	for (RecordData data : this.data) {
-	  if (data.getDistance() == null || data.getAltitude() == null) {
-		continue;
-	  }
 	  if (segment == null) {
-		segment = Segment.create(data);
+		segment = Segment.create(data, threshold);
 	  } else if (segment.finishedBy(data, threshold)) {
 		segment.finish(data);
 		segments.add(segment);
 		segment = Segment.createFromAdjacent(segment);
 	  }
-	  // ignore open segments at end
+	  // ignore open segments at the end
 	}
 	return segments;
+  }
+
+  public Collection<RecordData> getData() {
+	return new ArrayList<RecordData>(this.data);
   }
 
 }
