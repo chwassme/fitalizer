@@ -34,7 +34,7 @@ public class Main {
   }
 
   private static void print(Collection<? extends Object> data) {
-	data.stream().forEachOrdered(d -> System.out.println(d.toString()));
+	data.forEach(d -> System.out.println(d.toString()));
   }
 
 }
